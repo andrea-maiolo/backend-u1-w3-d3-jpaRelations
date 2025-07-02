@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import org.example.dao.MyDao;
 import org.example.entities.*;
 
 import java.time.LocalDate;
@@ -26,8 +27,8 @@ public class Application {
             String sCognome = faker.gameOfThrones().character();
             String sEmail = faker.internet().emailAddress();
             Sesso sSesso = Sesso.values()[random.nextInt(0, 2)];
-            LocalDate sDOB = LocalDate.of(random.nextInt(1980, 2000), random.nextInt(0, 12),
-                    random.nextInt(0, 28));
+            LocalDate sDOB = LocalDate.of(random.nextInt(1980, 2000), random.nextInt(1, 12),
+                    random.nextInt(1, 20));
 
             Persona newPersona = new Persona(sNome, sCognome, sEmail, sDOB, sSesso);
             return newPersona;
@@ -57,8 +58,8 @@ public class Application {
             int sNMP = random.nextInt(3, 50);
             String sDescri = faker.esports().event();
             TipoEvento sTipo = TipoEvento.values()[random.nextInt(0, 2)];
-            LocalDate sLd = LocalDate.of(random.nextInt(2025, 2031), random.nextInt(0, 12),
-                    random.nextInt(0, 28));
+            LocalDate sLd = LocalDate.of(random.nextInt(2025, 2031), random.nextInt(1, 12),
+                    random.nextInt(1, 20));
             Luogo randomLuogo = listaLuoghi.get(random.nextInt(0, 5));
 
             Evento eventSupplied = new Evento(sTitolo, sDescri, sNMP, sLd, sTipo, randomLuogo);
@@ -86,6 +87,13 @@ public class Application {
             listaPartecipazioni.add(partecipazioneSupplier.get());
         }
 
+
+        MyDao myDao = new MyDao(em);
+//        myDao.save(listaPersone.get(1));
+//        myDao.save(listaLuoghi.get(3));
+//        myDao.save(listaPartecipazioni.get(2));
+
+        System.out.println(listaPersone.get(1).getId());
 
     }
 
