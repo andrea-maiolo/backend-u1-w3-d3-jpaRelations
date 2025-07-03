@@ -53,48 +53,23 @@ public class Application {
             listaLuoghi.add(luogoSupp.get());
         }
 
-        Supplier<Evento> eventSupp = () -> {
-            String sTitolo = faker.esports().game();
-            int sNMP = random.nextInt(3, 50);
-            String sDescri = faker.esports().event();
-            TipoEvento sTipo = TipoEvento.values()[random.nextInt(0, 2)];
-            LocalDate sLd = LocalDate.of(random.nextInt(2025, 2031), random.nextInt(1, 12),
-                    random.nextInt(1, 20));
-            Luogo randomLuogo = listaLuoghi.get(random.nextInt(0, 5));
-
-            Evento eventSupplied = new Evento(sTitolo, sDescri, sNMP, sLd, sTipo, randomLuogo);
-            return eventSupplied;
-        };
-
-        List<Evento> listaEventi = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            listaEventi.add(eventSupp.get());
-        }
-
-
-        Supplier<Partecipazione> partecipazioneSupplier = () -> {
-            Stato sStato = Stato.values()[random.nextInt(0, 2)];
-            Evento randomEvento = listaEventi.get(random.nextInt(0, 5));
-            Persona randomPersona = listaPersone.get(random.nextInt(0, 5));
-            Partecipazione newPartecipazione = new Partecipazione(sStato, randomEvento, randomPersona);
-            return newPartecipazione;
-        };
-
-        List<Partecipazione> listaPartecipazioni = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            listaPartecipazioni.add(partecipazioneSupplier.get());
-        }
-
 
         MyDao myDao = new MyDao(em);
-//        myDao.save(listaPersone.get(1));
-//        myDao.save(listaLuoghi.get(3));
-//        myDao.save(listaPartecipazioni.get(2));
 
-        System.out.println(listaPersone.get(1).getId());
+//        for (int i = 0; i < listaPersone.size(); i++) {
+//            myDao.save(listaPersone.get(i));
+//            myDao.save((listaLuoghi.get(i)));
+//        }
 
+        Luogo luogoFromDb = (Luogo) myDao.getById(Luogo.class, "ebfeb4b5-79bf-4648-aa8a-8a01ecca636d");
+        System.out.println(luogoFromDb);
+        Evento newEvento = new Evento("festa", "compleanno", 20,
+                LocalDate.of(2025, 11, 03), TipoEvento.PUBBLICO, luogoFromDb);
+
+        myDao.save(newEvento);
+
+
+        //  "f654852b-5ddb-4265-9cef-82df3be8d648"  persona id
     }
 
 }
